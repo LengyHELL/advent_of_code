@@ -1,0 +1,12 @@
+{
+    "[cpp]": {
+        "editor.tabSize": 2
+    },
+    "editor.formatOnSave": true,
+    "C_Cpp.clang_format_style": "file",
+    "files.associations": {
+        "string": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp"
+    },
+}
