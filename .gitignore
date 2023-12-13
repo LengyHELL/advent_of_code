@@ -1,2 +1,3 @@
 /aoc
 puzzle_input*.txt
+*_test.py
