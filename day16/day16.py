@@ -147,31 +147,36 @@ class Contraption:
                 beam.move()
 
 
-with open(sys.argv[1], encoding="utf-8") as file:
-    lines = file.read().split("\n")
-    most_energized = 0
-    multiple = True  # set to False for part 1
+def main():
+    with open(sys.argv[1], encoding="utf-8") as file:
+        lines = file.read().split("\n")
+        most_energized = 0
+        multiple = True  # set to False for part 1
 
-    starting_beams = []
+        starting_beams = []
 
-    if multiple:
-        width = len(lines[0])
-        height = len(lines)
+        if multiple:
+            width = len(lines[0])
+            height = len(lines)
 
-        for y in range(height):
-            starting_beams.append(Beam(Coord(0, y), Coord(1, 0)))
-            starting_beams.append(Beam(Coord(width - 1, y), Coord(-1, 0)))
+            for y in range(height):
+                starting_beams.append(Beam(Coord(0, y), Coord(1, 0)))
+                starting_beams.append(Beam(Coord(width - 1, y), Coord(-1, 0)))
 
-        for x in range(width):
-            starting_beams.append(Beam(Coord(x, 0), Coord(0, 1)))
-            starting_beams.append(Beam(Coord(x, height - 1), Coord(0, -1)))
+            for x in range(width):
+                starting_beams.append(Beam(Coord(x, 0), Coord(0, 1)))
+                starting_beams.append(Beam(Coord(x, height - 1), Coord(0, -1)))
 
-    else:
-        starting_beams.append(Beam(Coord(0, 0), Coord(1, 0)))
+        else:
+            starting_beams.append(Beam(Coord(0, 0), Coord(1, 0)))
 
-    for beam in starting_beams:
-        contraption = Contraption(lines, [beam])
-        contraption.check_paths()
-        most_energized = max(most_energized, len(contraption.energized))
+        for beam in starting_beams:
+            contraption = Contraption(lines, [beam])
+            contraption.check_paths()
+            most_energized = max(most_energized, len(contraption.energized))
 
-    print(f"The number of energized tiles is {most_energized}")
+        print(f"The number of energized tiles is {most_energized}")
+
+
+if __name__ == "__main__":
+    main()
