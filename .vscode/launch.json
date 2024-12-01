@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "AOC: Test file",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
@@ -17,7 +17,7 @@
         },
         {
             "name": "AOC: Normal file",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
