@@ -13,7 +13,10 @@
             "justMyCode": true,
             "args": [
                 "${fileDirname}\\puzzle_input_test.txt"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            }
         },
         {
             "name": "AOC: Normal file",
@@ -24,7 +27,10 @@
             "justMyCode": true,
             "args": [
                 "${fileDirname}\\puzzle_input.txt"
-            ]
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            }
         }
     ]
 }
