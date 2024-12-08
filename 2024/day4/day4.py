@@ -4,42 +4,12 @@ Advent of Code Day 4
 
 import sys
 from modules.coord import Coord
+from modules.grid import Grid
 
 
-class Grid:
-    """
-    Represents the grid
-    """
-
-    layout: list[str]
-    width: int
-    height: int
-
-    def __init__(self, layout: list[str]):
-        self.layout = layout.copy()
-        self.width = len(layout)
-        self.height = len(layout[0])
-
-    def __str__(self):
-        drawing = ""
-
-        for y, line in enumerate(self.layout):
-            for char in line:
-                drawing += char
-
-            if y < (self.height - 1):
-                drawing += "\n"
-
-        return drawing
-
-    def at(self, point: Coord):
-        """
-        Returns item found at `point`
-        """
-        return self.layout[point.y][point.x]
-
-    def in_bounds(self, point: Coord):
-        return 0 <= point.x < self.width and 0 <= point.y < self.height
+class WordGrid(Grid):
+    def __init__(self, grid: list[str]):
+        Grid.__init__(self, grid)
 
     def find_word(self, word: str):
         matches = 0
@@ -54,14 +24,14 @@ class Grid:
             Coord(-1, 1),
         ]
 
-        for l, line in enumerate(self.layout):
+        for l, line in enumerate(self.grid):
             for i, _ in enumerate(line):
                 for d in directions:
                     match = True
                     location = Coord(l, i)
 
                     for char in word:
-                        if not self.in_bounds(location) or char != self.at(location):
+                        if not self.in_bounds(location) or char != self.get(location):
                             match = False
                             break
                         location += d
@@ -80,7 +50,7 @@ class Grid:
             Coord(-1, 1),
         ]
 
-        for l, line in enumerate(self.layout):
+        for l, line in enumerate(self.grid):
             for i, _ in enumerate(line):
                 matches = 0
 
@@ -89,7 +59,7 @@ class Grid:
                     location = Coord(l, i) - d
 
                     for char in "MAS":
-                        if not self.in_bounds(location) or char != self.at(location):
+                        if not self.in_bounds(location) or char != self.get(location):
                             match = False
                             break
                         location += d
@@ -104,9 +74,10 @@ class Grid:
 
 
 with open(sys.argv[1], encoding="utf-8") as file:
-    grid = Grid(file.read().split("\n"))
-    occurrances = grid.find_word("XMAS")
-    x_mases = grid.find_x_mas()
+    grid = WordGrid(file.read().split("\n"))
 
+    occurrances = grid.find_word("XMAS")
     print(f"XMAS appears {occurrances} times.")
+
+    x_mases = grid.find_x_mas()
     print(f"X-MAX appears {x_mases} times.")

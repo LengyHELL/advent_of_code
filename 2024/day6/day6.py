@@ -3,18 +3,15 @@ Advent of Code Day 6
 """
 
 import sys
-from math import ceil, floor
 from typing import List, Tuple, Set
 
 from termcolor import colored
 
 from modules.coord import Coord
+from modules.grid import Grid
 
 
-class Grid:
-    grid: List[str]
-    width: int
-    height: int
+class GuardMap(Grid):
     start: Coord
     route: Set[Tuple[Coord, Coord]]
     obstructions: List[Coord]
@@ -23,18 +20,14 @@ class Grid:
         self,
         grid: List[str],
     ):
-        self.grid = grid.copy()
-        self.width = len(grid)
-        self.height = len(grid[0])
-        for y, line in enumerate(grid):
-            if (x := line.find("^")) >= 0:
-                self.start = Coord(x, y)
+        Grid.__init__(self, grid)
         self.route = []
         self.obstructions = []
+        self.find_start()
 
     def __str__(self):
         drawing = ""
-        route_positions = [position[0] for position in self.route]
+        route_positions = set(position[0] for position in self.route)
 
         for y in range(self.height):
             for x in range(self.width):
@@ -57,35 +50,10 @@ class Grid:
 
         return drawing
 
-    def print(self):
-        print(*str(self).split("\n"), sep="\n")
-
-    def __repr__(self):
-        return f"<grid [{self.width} x {self.height}]>"
-
-    def constrain(self, point: Coord):
-        x, y = point
-
-        if x < 0:
-            x += self.width * ceil(abs(x) / self.width)
-        elif x >= self.width:
-            x -= self.width * floor(abs(x) / self.width)
-
-        if y < 0:
-            y += self.height * ceil(abs(y) / self.height)
-        elif y >= self.height:
-            y -= self.height * floor(abs(y) / self.height)
-
-        return Coord(x, y)
-
-    def get(self, point: Coord):
-        if point != self.constrain(point):
-            return None
-        return self.grid[point.y][point.x]
-
-    def set(self, point: Coord, value: str):
-        row = self.grid[point.y]
-        self.grid[point.y] = row[: point.x] + value + row[point.x + 1 :]
+    def find_start(self):
+        for y, line in enumerate(self.grid):
+            if (x := line.find("^")) >= 0:
+                self.start = Coord(x, y)
 
     def find_route(self):
         self.route = set()
@@ -132,7 +100,7 @@ class Grid:
 
 def main():
     with open(sys.argv[1], encoding="utf-8") as file:
-        guard_map = Grid(file.read().splitlines())
+        guard_map = GuardMap(file.read().splitlines())
 
         guard_map.find_route()
         guard_map.print()
