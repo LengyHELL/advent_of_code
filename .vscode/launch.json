@@ -30,7 +30,8 @@
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
-            }
+            },
+            "preLaunchTask": "Fetch puzzle input"
         }
     ]
 }

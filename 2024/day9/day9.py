@@ -5,15 +5,29 @@ Advent of Code Day 9
 import sys
 
 
-def get_checksum(file: str):
+def read_disk_map(file: str):
     identifier = 0
     disk_map: list[str] = []
     for index, block in enumerate(file):
         if index % 2 == 0:
-            disk_map.extend([identifier for _ in range(int(block))])
+            disk_map.extend([str(identifier) for _ in range(int(block))])
             identifier += 1
         else:
             disk_map.extend(["." for _ in range(int(block))])
+
+    return disk_map
+
+
+def calculate_checksum(disk_map: list[str]):
+    checksum = 0
+    for index, block in enumerate(disk_map):
+        if block != ".":
+            checksum += index * int(block)
+    return checksum
+
+
+def get_checksum(file: str):
+    disk_map = read_disk_map(file)
 
     index = 0
     length = len(disk_map)
@@ -27,11 +41,7 @@ def get_checksum(file: str):
             length = len(disk_map)
         index += 1
 
-    checksum = 0
-    for index, block in enumerate(disk_map):
-        checksum += index * int(block)
-
-    return checksum
+    return calculate_checksum(disk_map)
 
 
 def get_last_file(disk_map: list[str], index: int):
@@ -48,7 +58,7 @@ def get_last_file(disk_map: list[str], index: int):
     return (start + 1, size)
 
 
-def get_free_space(disk_map: str, end, index=0):
+def get_free_space(disk_map: list[str], end: int, index=0):
     current = index
     start = None
     size = 0
@@ -64,17 +74,11 @@ def get_free_space(disk_map: str, end, index=0):
 
 
 def get_checksum_without_fragments(file: str):
-    identifier = 0
-    disk_map: list[str] = []
-    for index, block in enumerate(file):
-        if index % 2 == 0:
-            disk_map.extend([str(identifier) for _ in range(int(block))])
-            identifier += 1
-        else:
-            disk_map.extend(["." for _ in range(int(block))])
+    disk_map = read_disk_map(file)
 
     index = len(disk_map) - 1
     while index >= 0:
+        print(f"{index:<20}", end="\r")
         file_start, file_size = get_last_file(disk_map, index)
         free_start, free_size = get_free_space(disk_map, index)
 
@@ -84,28 +88,25 @@ def get_checksum_without_fragments(file: str):
             )
 
         if free_start is not None:
-            temp = disk_map[:free_start]
-            temp.extend(disk_map[file_start - file_size : file_start])
-            temp.extend(disk_map[free_start + file_size : free_start + free_size])
-            temp.extend(disk_map[free_start + free_size : file_start - file_size])
-            temp.extend(disk_map[free_start : free_start + file_size])
-            temp.extend(disk_map[file_start:])
-            disk_map = temp
+            temp = disk_map[free_start : free_start + file_size]
+            disk_map[free_start : free_start + file_size] = disk_map[
+                file_start - file_size : file_start
+            ]
+            disk_map[file_start - file_size : file_start] = temp
 
         index = file_start - 1 - file_size
 
-    checksum = 0
-    for index, block in enumerate(disk_map):
-        if block != ".":
-            checksum += index * int(block)
-
-    return checksum
+    return calculate_checksum(disk_map)
 
 
 def main():
     with open(sys.argv[1], encoding="utf-8") as file:
-        # print(get_checksum(file.read()))
-        print(get_checksum_without_fragments(file.read()))
+        disk_map = file.read()
+
+        print(f"The resulting filesystem checksum is {get_checksum(disk_map)}.")
+        print(
+            f"The resulting filesystem checksum without fragmentation is {get_checksum_without_fragments(disk_map)}."
+        )
 
 
 if __name__ == "__main__":

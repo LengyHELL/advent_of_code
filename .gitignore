@@ -3,3 +3,4 @@ puzzle_input*.txt
 *_test.py
 .python-version
 __pycache__
+.cookie-info
