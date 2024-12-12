@@ -21,6 +21,18 @@ class Coord:
     def __eq__(self, other: "Coord"):
         return self.x == other.x and self.y == other.y
 
+    def __lt__(self, other: "Coord"):
+        return self.x < other.x and self.y < other.y
+
+    def __gt__(self, other: "Coord"):
+        return self.x > other.x and self.y > other.y
+
+    def __le__(self, other: "Coord"):
+        return self.x <= other.x and self.y <= other.y
+
+    def __ge__(self, other: "Coord"):
+        return self.x >= other.x and self.y >= other.y
+
     def __mul__(self, number: int):
         return Coord(self.x * number, self.y * number)
 
@@ -45,3 +57,6 @@ class Coord:
         else:
             y *= -1
         return Coord(x, y)
+
+    def abs(self):
+        return Coord(abs(self.x), abs(self.y))

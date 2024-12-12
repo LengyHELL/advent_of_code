@@ -5,3 +5,4 @@ disable=
     C0115, # missing-class-docstring
     C0116, # missing-function-docstring
     W0621, # redefined-outer-name
+    W0640, # cell-var-from-loop
