@@ -14,8 +14,8 @@ class Grid:
         grid: List[str],
     ):
         self.grid = grid.copy()
-        self.width = len(grid)
-        self.height = len(grid[0])
+        self.height = len(grid)
+        self.width = len(grid[0])
 
     def __str__(self):
         drawing = ""
