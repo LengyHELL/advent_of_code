@@ -3,6 +3,7 @@ import re
 import os
 from urllib.request import build_opener, install_opener, urlopen
 from urllib.error import HTTPError
+from termcolor import colored
 
 
 def main():
@@ -11,9 +12,18 @@ def main():
     if not os.path.isfile(os.path.join(sys.argv[2], output_file)):
         try:
             with open(sys.argv[1], encoding="utf-8") as cookie_file:
-                year, day = re.match(
-                    r".+advent_of_code\\(\d+)\\day(\d+)", sys.argv[2]
-                ).groups()
+                try:
+                    year, day = re.match(
+                        r".+advent_of_code\\(\d+)\\day(\d+)", sys.argv[2]
+                    ).groups()
+                except AttributeError:
+                    print(
+                        colored(
+                            "Wrong directory, format must be 'advent_of_code/<year>/day<day>'.",
+                            "red",
+                        )
+                    )
+                    sys.exit(4)
                 url = f"https://adventofcode.com/{year}/day/{day}/input"
 
                 opener = build_opener()
@@ -27,14 +37,16 @@ def main():
                                 response.read().decode("utf-8").strip("\n")
                             )
 
-                    print(f"Input file fetched from '{url}'.")
+                    print(colored(f"Input file fetched from '{url}'.", "green"))
                 except HTTPError:
-                    print("Input file not found.")
+                    print(colored("Input file not found.", "red"))
+                    sys.exit(3)
         except FileNotFoundError:
-            print("Cookie info file not found.")
+            print(colored("Cookie info file not found.", "red"))
+            sys.exit(2)
 
     else:
-        print("Input already exists, skipping fetch.")
+        print(colored("Input already exists, skipping fetch.", "yellow"))
 
 
 if __name__ == "__main__":
