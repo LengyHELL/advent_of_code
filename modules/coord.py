@@ -47,7 +47,9 @@ class Coord:
     def copy(self):
         return Coord(self.x, self.y)
 
-    def distance(self, other: "Coord"):
+    def distance(self, other: "Coord" = None):
+        if other is None:
+            other = Coord(0, 0)
         return abs(other.x - self.x) + abs(other.y - self.y)
 
     def rotate(self, clockwise=True):
