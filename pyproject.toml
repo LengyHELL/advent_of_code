@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 200
+target-version = "py311"
+
+select = ["F", "E", "W", "PL", "B", "I"]
+
+ignore = [
+    "PLR2004", # Magic variables
+]

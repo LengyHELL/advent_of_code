@@ -1,8 +1,0 @@
-[MASTER]
-disable=
-    C0103, # invalid-name
-    C0114, # missing-module-docstring
-    C0115, # missing-class-docstring
-    C0116, # missing-function-docstring
-    W0621, # redefined-outer-name
-    W0640, # cell-var-from-loop
