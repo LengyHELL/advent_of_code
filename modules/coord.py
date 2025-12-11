@@ -62,3 +62,6 @@ class Coord:
 
     def abs(self):
         return Coord(abs(self.x), abs(self.y))
+
+    def det(self, other: "Coord"):
+        return self.x * other.y - self.y * other.x
